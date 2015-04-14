@@ -11,6 +11,8 @@ from ...models import ArchivedService, Service, Supplier, Framework
 from ...validation import validate_json_or_400, \
     validate_updater_json_or_400, is_valid_service_id
 from ..utils import url_for, pagination_links, drop_foreign_fields, link
+import requests
+import json
 
 
 # TODO: This should probably not be here
@@ -159,7 +161,6 @@ def update_service(service_id):
 
 @main.route('/services/<string:service_id>', methods=['PUT'])
 def import_service(service_id):
-
     if not is_valid_service_id(service_id):
         abort(400, "Invalid service id supplied")
 
@@ -201,6 +202,16 @@ def import_service(service_id):
 
     db.session.add(service)
 
+    index_data = prepare_service_json_for_indexing(service_data)
+
+    requests.post(
+        "http://localhost:5001/g-cloud/services/{}".format(service_id),
+        data=json.dumps(index_data),
+        headers={
+            "content-type": "application/json"
+        }
+    )
+
     try:
         db.session.commit()
     except IntegrityError:
@@ -212,7 +223,6 @@ def import_service(service_id):
 
 @main.route('/services/<string:service_id>', methods=['GET'])
 def get_service(service_id):
-
     if not is_valid_service_id(service_id):
         abort(400, "Invalid service id supplied")
 
@@ -251,3 +261,18 @@ def jsonify_service(service):
                              service_id=data['id']))
     ]
     return data
+
+
+def prepare_service_json_for_indexing(json_to_index):
+    return {
+        "service": {
+            "id": json_to_index["id"],
+            "lot": json_to_index["lot"],
+            "serviceName": json_to_index["serviceName"],
+            "serviceSummary": json_to_index["serviceSummary"],
+            "serviceBenefits": json_to_index["serviceBenefits"],
+            "serviceFeatures": json_to_index["serviceFeatures"],
+            "serviceTypes": json_to_index["serviceTypes"],
+            "supplierName": "Supplier Name"
+        }
+    }
