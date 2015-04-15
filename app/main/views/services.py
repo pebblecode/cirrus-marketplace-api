@@ -208,7 +208,8 @@ def import_service(service_id):
         "http://localhost:5001/g-cloud/services/{}".format(service_id),
         data=json.dumps(index_data),
         headers={
-            "content-type": "application/json"
+            "content-type": "application/json",
+            "Authorization": "Bearer myToken"
         }
     )
 
