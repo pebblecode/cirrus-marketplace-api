@@ -30,6 +30,19 @@ class TestApplication(BaseApplicationTest):
             headers={'Authorization': 'Bearer invalid-token'})
         assert 403 == response.status_code
 
-    def test_max_age_is_one_day(self):
+    def test_get_and_head_requests_are_cached_for_one_day(self):
         response = self.client.get('/')
         assert_equal(86400, response.cache_control.max_age)
+
+        response = self.client.head('/')
+        assert_equal(86400, response.cache_control.max_age)
+
+    def test_post_put_and_delete_requests_are_not_cached(self):
+        response = self.client.post('/users/auth')
+        assert_equal(None, response.cache_control.max_age)
+
+        response = self.client.put('/services/123')
+        assert_equal(None, response.cache_control.max_age)
+
+        response = self.client.delete('/services/123/draft')
+        assert_equal(None, response.cache_control.max_age)

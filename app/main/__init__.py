@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request
 
 from ..authentication import requires_authentication
 
@@ -9,7 +9,8 @@ main.before_request(requires_authentication)
 
 @main.after_request
 def add_cache_control(response):
-    response.cache_control.max_age = 24 * 60 * 60
+    if request.method in ['GET', 'HEAD']:
+        response.cache_control.max_age = 24 * 60 * 60
     return response
 
 
