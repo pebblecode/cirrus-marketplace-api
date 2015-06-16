@@ -33,7 +33,7 @@ def update_and_validate_service(service, service_payload, updater_payload):
 
 
 def index_service(service):
-    if not service.framework.expired and service.status == 'published':
+    if service.framework.status == 'live' and service.status == 'published':
         try:
             search_api_client.index(
                 service.service_id,
