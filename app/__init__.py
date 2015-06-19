@@ -1,6 +1,7 @@
 from flask import Flask
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.cors import CORS
 from dmutils import apiclient, init_app, flask_featureflags
 
 from config import configs
@@ -23,6 +24,9 @@ def create_app(config_name):
         feature_flags=feature_flags,
         search_api_client=search_api_client
     )
+
+    if application.config['DM_CORS']:
+        CORS(application)
 
     from .main import main as main_blueprint
     application.register_blueprint(main_blueprint)

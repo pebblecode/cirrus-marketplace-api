@@ -13,6 +13,7 @@ class Config:
     ALLOW_EXPLORER = True
     AUTH_REQUIRED = True
     DM_HTTP_PROTO = 'http'
+    DM_CORS = False
 
     # Logging
     DM_LOG_LEVEL = 'DEBUG'
@@ -43,6 +44,7 @@ class Test(Config):
 
 class Development(Config):
     DEBUG = True
+    DM_CORS = True
 
 
 class Live(Config):
