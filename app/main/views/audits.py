@@ -1,7 +1,7 @@
 from flask import jsonify, abort, request, current_app
 from datetime import datetime
 from ...models import AuditEvent
-from sqlalchemy import asc, Date, cast
+from sqlalchemy import asc, Date, cast, String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql.expression import true, false
 from ...utils import pagination_links
@@ -12,6 +12,22 @@ from dmutils.config import convert_to_boolean
 from ...validation import is_valid_date, is_valid_acknowledged_state
 from ...service_utils import validate_and_return_updater_request
 
+
+@main.route('/audit-events/<string:service_id>', methods=['GET'])
+def fetch_audits_for_service(service_id):
+
+    audits = AuditEvent.query.filter(
+        AuditEvent.data['serviceId'].cast(String) == service_id
+    ).order_by(
+        asc(AuditEvent.created_at)
+    ).all()
+
+    print audits
+
+    return jsonify(
+        auditEvents=[audit.serialize() for audit in audits],
+        links=dict()
+    )
 
 @main.route('/audit-events', methods=['GET'])
 def list_audits():
