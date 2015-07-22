@@ -17,7 +17,8 @@ from ...service_utils import validate_and_return_updater_request
 def fetch_audits_for_service(service_id):
 
     audits = AuditEvent.query.filter(
-        AuditEvent.data['serviceId'].cast(String) == service_id
+        AuditEvent.data['serviceId'].cast(String) == service_id,
+        AuditEvent.type == 'update_service'
     ).order_by(
         asc(AuditEvent.created_at)
     ).all()
