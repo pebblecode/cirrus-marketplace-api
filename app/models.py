@@ -564,7 +564,7 @@ class Service(db.Model, ServiceTableMixin):
         return Service(
             framework=draft.framework,
             lot=draft.lot,
-            service_id=generate_new_service_id(draft.framework.slug),
+            service_id=generate_new_service_id(draft.framework.slug, draft.lot.slug),
             supplier=draft.supplier,
             data=draft.data,
             status=status
@@ -1051,7 +1051,27 @@ def filter_null_value_fields(obj):
     )
 
 
-def generate_new_service_id(framework_slug):
+def generate_new_service_id(framework_slug, lot_slug):
+    lot_slugs = {
+        'digital-outcomes': 1,
+        'digital-specialists': 2,
+        'user-research-studios': 3,
+        'user-research-participants': 4
+    }
+
+    framework_slugs = {
+        'g-cloud-7': 7,
+        'digital-outcomes-and-specialists': 1
+    }
+
+    if framework_slug == 'digital-outcomes-and-specialists':
+        if lot_slug == 'user-research-studios':
+            return "{}{}{}".format(
+                framework_slugs[framework_slug],
+                lot_slugs[lot_slug],
+                str(random.randint(0e14, 1e14-1)).zfill(14)
+            )
+
     if framework_slug == 'g-cloud-7':
         return str(random.randint(7e15, 8e15-1))
     else:
