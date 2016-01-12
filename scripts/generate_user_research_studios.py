@@ -42,7 +42,6 @@ def generate_user_research_studio(supplier_id, studio_number):
 
 
 def generate_user_research_studios(output, supplier_id, num_studios):
-    # some error if number of labs is 0
     studios = {'services': []}
     timestamp = int(time.time())
 
@@ -56,6 +55,9 @@ if __name__ == '__main__':
     arguments = docopt(__doc__)
 
     num_studios = int(arguments['<num_studios>'])
+    if num_studios < 1:
+        raise ValueError('You must generate at least 1 user research studio.')
+
     output = open(arguments.get('--filename'), 'w+') if arguments.get('--filename') else sys.stdout
     supplier_id = arguments.get('--supplier_id') if arguments.get('--supplier_id') else 11111
 
