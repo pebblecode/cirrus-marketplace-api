@@ -3,7 +3,7 @@
 Create a number of user research studios.
 
 Usage:
-    generate_user_research_studios.py <num_studios> [--filename=<filename>]
+    generate_user_research_studios.py <num_studios> [--filename=<filename>] [--supplier_id=<supplier_id>]
 """
 import sys
 import json
@@ -12,7 +12,7 @@ import time
 from docopt import docopt
 
 
-def generate_user_research_studio(parameter):
+def generate_user_research_studio(supplier_id, studio_number):
     return {
         "labAccessibility": "Nanaimo bar there should plaid flannel back bacon for eavestroughs eats of all igloo on this mickey lacrosse stagette.",  # noqa
         "labAddressBuilding": "123 Fake Street",
@@ -34,20 +34,20 @@ def generate_user_research_studio(parameter):
         "labViewingArea": "Yes – included as standard",
         "labWaitingArea": "Yes – included as standard",
         "labWiFi": True,
-        "serviceName": "Studio {}".format(parameter),
-        "supplierId": 11111,
+        "serviceName": "Studio {}".format(studio_number),
+        "supplierId": supplier_id,
         "lot": "user-research-studios",
         "frameworkSlug": "digital-outcomes-and-specialists"
       }
 
 
-def generate_user_research_studios(num_studios, output):
+def generate_user_research_studios(output, supplier_id, num_studios):
     # some error if number of labs is 0
     studios = {'services': []}
     timestamp = int(time.time())
 
     for i in range(num_studios):
-        studios['services'].append(generate_user_research_studio(timestamp + i))
+        studios['services'].append(generate_user_research_studio(supplier_id, timestamp + i))
 
     json.dump(studios, output, indent=2, separators=(',', ': '))
 
@@ -57,5 +57,6 @@ if __name__ == '__main__':
 
     num_studios = int(arguments['<num_studios>'])
     output = open(arguments.get('--filename'), 'w+') if arguments.get('--filename') else sys.stdout
+    supplier_id = arguments.get('--supplier_id') if arguments.get('--supplier_id') else 11111
 
-    generate_user_research_studios(num_studios, output)
+    generate_user_research_studios(output, supplier_id, num_studios)
