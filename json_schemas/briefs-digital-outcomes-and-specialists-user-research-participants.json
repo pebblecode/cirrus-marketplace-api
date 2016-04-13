@@ -1,6 +1,30 @@
 {
   "$schema": "http://json-schema.org/schema#",
   "additionalProperties": false,
+  "anyOf": [
+    {
+      "required": [
+        "culturalWeighting",
+        "priceWeighting",
+        "technicalWeighting"
+      ],
+      "title": "weighting"
+    }
+  ],
+  "dependencies": {
+    "culturalWeighting": [
+      "priceWeighting",
+      "technicalWeighting"
+    ],
+    "priceWeighting": [
+      "culturalWeighting",
+      "technicalWeighting"
+    ],
+    "technicalWeighting": [
+      "culturalWeighting",
+      "priceWeighting"
+    ]
+  },
   "properties": {
     "backgroundInformation": {
       "minLength": 1,
@@ -60,6 +84,11 @@
       "maximum": 80,
       "minimum": 20,
       "type": "integer"
+    },
+    "questionAndAnswerSessionDetails": {
+      "minLength": 0,
+      "pattern": "^$|(^(?:\\S+\\s+){0,99}\\S+$)",
+      "type": "string"
     },
     "technicalWeighting": {
       "exclusiveMaximum": false,
