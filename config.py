@@ -52,7 +52,7 @@ class Test(Config):
 
 
 class Development(Config):
-    DEBUG = True
+    DEBUG = False
 
     DM_API_AUTH_TOKENS = 'myToken'
     DM_SEARCH_API_AUTH_TOKEN = 'myToken'
