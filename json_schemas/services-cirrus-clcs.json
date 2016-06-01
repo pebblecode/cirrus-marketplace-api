@@ -83,6 +83,9 @@
       "minLength": 1,
       "pattern": "^(?:\\S+\\s+){0,49}\\S+$",
       "type": "string"
+    },
+    "vatIncluded": {
+      "type": "boolean"
     }
   },
   "required": [
@@ -93,7 +96,8 @@
     "serviceBenefits",
     "serviceFeatures",
     "serviceName",
-    "serviceSummary"
+    "serviceSummary",
+    "vatIncluded"
   ],
   "title": "Cirrus Contingent Labour & Consultancy Services Schema",
   "type": "object"
