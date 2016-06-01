@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "minimumContractPeriod": {
+      "enum": [
+        "Hour",
+        "Day",
+        "Month",
+        "Year",
+        "Other"
+      ]
+    },
+    "priceInterval": {
+      "enum": [
+        "",
+        "Second",
+        "Minute",
+        "Hour",
+        "Day",
+        "Week",
+        "Month",
+        "Quarter",
+        "6 months",
+        "Year"
+      ]
+    },
+    "priceMax": {
+      "pattern": "^$|^\\d{1,15}(?:\\.\\d{1,5})?$",
+      "type": "string"
+    },
+    "priceMin": {
+      "pattern": "^\\d{1,15}(?:\\.\\d{1,5})?$",
+      "type": "string"
+    },
+    "priceUnit": {
+      "enum": [
+        "Unit",
+        "Person",
+        "Licence",
+        "User",
+        "Device",
+        "Instance",
+        "Server",
+        "Virtual machine",
+        "Transaction",
+        "Megabyte",
+        "Gigabyte",
+        "Terabyte"
+      ]
+    },
+    "pricingDocumentURL": {
+      "format": "uri",
+      "type": "string"
+    },
+    "serviceBenefits": {
+      "items": {
+        "maxLength": 100,
+        "pattern": "^(?:\\S+\\s+){0,9}\\S+$",
+        "type": "string"
+      },
+      "maxItems": 10,
+      "minItems": 1,
+      "type": "array"
+    },
+    "serviceFeatures": {
+      "items": {
+        "maxLength": 100,
+        "pattern": "^(?:\\S+\\s+){0,9}\\S+$",
+        "type": "string"
+      },
+      "maxItems": 10,
+      "minItems": 1,
+      "type": "array"
+    },
+    "serviceName": {
+      "maxLength": 100,
+      "minLength": 1,
+      "type": "string"
+    },
+    "serviceSummary": {
+      "maxLength": 500,
+      "minLength": 1,
+      "pattern": "^(?:\\S+\\s+){0,49}\\S+$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "minimumContractPeriod",
+    "priceMin",
+    "priceUnit",
+    "pricingDocumentURL",
+    "serviceBenefits",
+    "serviceFeatures",
+    "serviceName",
+    "serviceSummary"
+  ],
+  "title": "Cirrus Catering Services Schema",
+  "type": "object"
+}
