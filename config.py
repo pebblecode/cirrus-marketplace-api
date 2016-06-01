@@ -82,7 +82,7 @@ configs = {
     'development': Development,
     'test': Test,
 
-    'preview': Preview,
+    'preview': Development,
     'staging': Staging,
     'production': Production,
 }
