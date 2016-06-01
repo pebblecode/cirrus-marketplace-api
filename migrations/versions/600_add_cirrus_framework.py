@@ -11,13 +11,15 @@ down_revision = '590'
 
 from alembic import op
 from sqlalchemy.sql import table, column
-from sqlalchemy import String
+from sqlalchemy import String, Boolean
 
 
 frameworks = table('frameworks',
     column('name', String),
     column('framework', String),
+    column('slug', String),
     column('status', String),
+    column('clarification_questions_open', Boolean)
 )
 
 
@@ -27,13 +29,15 @@ def upgrade():
         values({'name': op.inline_literal('Cirrus Framework'),
                 'framework': op.inline_literal('cirrus'),
                 'slug': op.inline_literal('cirrus-1'),
-                'status': op.inline_literal('open')}))
+                'status': op.inline_literal('open'),
+                'clarification_questions_open': op.inline_literal(False),
+                }))
 
     lot_table = table(
         'lots',
-        column('name', sa.String),
-        column('slug', sa.String),
-        column('one_service_limit', sa.Boolean)
+        column('name', String),
+        column('slug', String),
+        column('one_service_limit', Boolean)
     )
 
     op.bulk_insert(lot_table, [
@@ -45,7 +49,7 @@ def upgrade():
     res = conn.execute("SELECT id FROM frameworks WHERE slug = 'cirrus-1'")
     framework = list(res.fetchall())
 
-    res = conn.execute("SELECT id FROM lots WHERE slug in ('clcs', 'catering')")
+    res = conn.execute("SELECT id FROM lots WHERE slug in ('clcs', 'catering', 'saas', 'iaas')")
     lots = list(res.fetchall())
 
     if len(framework) == 0:
@@ -57,8 +61,7 @@ def upgrade():
 
 
 def downgrade():
-    op.execute(
-        frameworks.delete().where(frameworks.c.name == 'Cirrus Framework'))
+
     conn = op.get_bind()
     res = conn.execute("SELECT id FROM frameworks WHERE slug = 'cirrus-1'")
     framework = list(res.fetchall())
@@ -70,3 +73,6 @@ def downgrade():
     op.execute("""
         DELETE from lots WHERE slug in ('clcs', 'catering');
     """)
+    
+    op.execute(
+        frameworks.delete().where(frameworks.c.name == 'Cirrus Framework'))
