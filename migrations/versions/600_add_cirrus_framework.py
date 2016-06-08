@@ -28,7 +28,7 @@ def upgrade():
         frameworks.insert().
         values({'name': op.inline_literal('Cirrus Framework'),
                 'framework': op.inline_literal('cirrus'),
-                'slug': op.inline_literal('cirrus-1'),
+                'slug': op.inline_literal('cirrus'),
                 'status': op.inline_literal('open'),
                 'clarification_questions_open': op.inline_literal(False),
                 }))
