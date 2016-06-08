@@ -36,7 +36,7 @@ SCHEMA_NAMES = [
     'services-digital-outcomes-and-specialists-digital-specialists',
     'services-digital-outcomes-and-specialists-user-research-studios',
     'services-digital-outcomes-and-specialists-user-research-participants',
-    'services-inoket-supply_teachers',
+    'services-inoket-1-supply_teachers',
     'services-update',
     'users',
     'users-auth',
