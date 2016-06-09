@@ -1,13 +1,13 @@
 """Add Inoket-2
 
 Revision ID: 620_Inoket
-Revises: 610_Cirrus
+Revises: 610_Inoket
 Create Date: 2015-06-17 14:44:08.138355
 """
 
 # revision identifiers, used by Alembic.
 revision = '620_Inoket'
-down_revision = '610_Cirrus'
+down_revision = '610_Inoket'
 
 from alembic import op
 from sqlalchemy.sql import table, column
