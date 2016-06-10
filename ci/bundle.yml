@@ -9,7 +9,6 @@ image_resource:
     tag: "3.4"
 
 inputs:
-  - name: assets
   - name: app
   - name: version
 
