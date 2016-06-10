@@ -45,7 +45,7 @@ jobs:
         trigger: true
       - task: install-python-dependencies
         file: api/ci/build_app.yml
-        input_mapping: {code: supplier-frontend}
+        input_mapping: {code: api}
       - task: bundle
         file: api/ci/bundle.yml
       - put: release-artifacts
