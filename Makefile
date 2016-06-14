@@ -5,13 +5,12 @@ deploydir = $(rootdir)/build
 to_deploy = app \
 	    application.py \
 	    config.py \
-	    .coveragerc \
 	    .ebextensions \
-	    Procfile \
+	    json_schemas \
+	    data \
 	    requirements.txt \
 	    scripts \
 	    setup.cfg \
-	    spec \
 	    tests
 app_dir = $(rootdir)/app
 
