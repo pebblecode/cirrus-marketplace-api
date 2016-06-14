@@ -7,6 +7,7 @@ to_deploy = app \
 	    config.py \
 	    .ebextensions \
 	    json_schemas \
+	    migrations \
 	    data \
 	    requirements.txt \
 	    scripts \
