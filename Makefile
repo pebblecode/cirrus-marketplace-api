@@ -1,5 +1,19 @@
 SHELL := /bin/bash
 VIRTUALENV_ROOT := $(shell [ -z $$VIRTUAL_ENV ] && echo $$(pwd)/venv || echo $$VIRTUAL_ENV)
+rootdir =$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+deploydir = $(rootdir)/build
+to_deploy = app \
+	    application.py \
+	    config.py \
+	    .ebextensions \
+	    json_schemas \
+	    migrations \
+	    data \
+	    requirements.txt \
+	    scripts \
+	    setup.cfg \
+	    tests
+app_dir = $(rootdir)/app
 
 run_all: requirements run_migrations run_app
 
@@ -31,5 +45,11 @@ test_migrations: virtualenv
 
 test_unit: virtualenv
 	${VIRTUALENV_ROOT}/bin/py.test ${PYTEST_ARGS}
+
+bundle_app:
+	mkdir -p $(deploydir)
+	for dir in $(to_deploy); do \
+		cp -r $$dir $(deploydir); \
+	done
 
 .PHONY: virtualenv requirements requirements_for_test test_pep8 test_migrations test_unit test test_all run_migrations run_app run_all
