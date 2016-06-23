@@ -25,6 +25,10 @@ Install dependencies, run migrations and run the app
 make run_all
 ```
 
+Optional: Restore production database
+
+see: doc/clone_database.asciidoc
+
 ## Full setup
 
 Install [Virtualenv](https://virtualenv.pypa.io/en/latest/)

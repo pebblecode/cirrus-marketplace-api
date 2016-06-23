@@ -42,7 +42,7 @@ class Test(Config):
     DM_SEARCH_API_URL = 'http://localhost'
     DEBUG = True
     ES_ENABLED = False
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/digitalmarketplace_test'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://test:test@localhost/inoket_test'
     DM_API_AUTH_TOKENS = 'myToken'
     DM_API_SERVICES_PAGE_SIZE = 5
     DM_API_SUPPLIERS_PAGE_SIZE = 5
