@@ -48,6 +48,7 @@ SCHEMA_NAMES = [
     'suppliers',
     'new-supplier',
     'contact-information',
+    'orders-create',
 ]
 FORMAT_CHECKER = FormatChecker()
 

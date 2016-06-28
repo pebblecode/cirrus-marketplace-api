@@ -1,3 +1,5 @@
+.python-version
+.cache/
 venv
 .elasticbeanstalk/
 *.pyc

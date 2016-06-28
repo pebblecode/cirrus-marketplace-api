@@ -1,0 +1,27 @@
+= Clone prod database
+pebble {code} <cirrusadmin@pebblecode.com>
+v1.0, 21/06/2016
+
+_Using docker containers to dump and restore the prod database to a local instance_
+
+== Open ssh tunnel to prod db
+
+[source,bash]
+----
+ssh -o IdentitiesOnly=yes -o "UserKnownHostsFile /dev/null" -F /dev/null -i ~/.ssh/inoket/aws/preview_id_rsa -Nf -L 172.17.0.1:5433:$(terraform output -module data pg_address):5432 ec2-user@$(terraform output -module network bastion_host_dns)
+----
+
+== Dump prod db
+
+[source,bash]
+----
+docker run --rm --volume /mnt/data/docker-data-volumes/inoket/api/dump:/data  -ti --name pg_client postgres:9.5 pg_dump -U cirrusadmin -h 172.17.0.1 -p 5433 -d cirrus -f /data/prod_dump.sql
+----
+
+== Restore to local instance
+
+[source,bash]
+----
+docker run --rm --link api_pg_1:api --net api_default --volume /mnt/data/docker-data-volumes/inoket/api/dump:/data -ti --name pg_client postgres:9.5 psql -U cirrusadmin -h api -d cirrus -f /data/prod_dump.sql
+----
+

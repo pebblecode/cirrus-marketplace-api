@@ -1,0 +1,11 @@
+# vim: ft=yaml:et:ts=2:sw=2
+---
+version: '2'
+services:
+  pg:
+    environment:
+      - POSTGRES_PASSWORD=pebblec0de
+      - POSTGRES_USER=cirrusadmin
+      - POSTGRES_DB=cirrus
+      - PGDATA=/var/lib/postgresql/data/pgdata
+

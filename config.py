@@ -20,6 +20,10 @@ class Config:
     DM_LOG_PATH = '/var/log/digitalmarketplace/application.log'
     DM_REQUEST_ID_HEADER = 'DM-Request-ID'
     DM_DOWNSTREAM_REQUEST_ID_HEADER = 'X-Amz-Cf-Id'
+    ORDER_BUYER_FROM_EMAIL = "donotreply@inoket.com"
+    ORDER_BUYER_FROM_NAME = "Inoket Orders Management"
+    ORDER_SUPPLIER_FROM_EMAIL = "donotreply@inoket.com"
+    ORDER_SUPPLIER_FROM_NAME = "Inoket Orders Management"
 
     # Feature Flags
     RAISE_ERROR_ON_MISSING_FEATURES = True
@@ -42,7 +46,7 @@ class Test(Config):
     DM_SEARCH_API_URL = 'http://localhost'
     DEBUG = True
     ES_ENABLED = False
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/digitalmarketplace_test'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://test:test@localhost/inoket_test'
     DM_API_AUTH_TOKENS = 'myToken'
     DM_API_SERVICES_PAGE_SIZE = 5
     DM_API_SUPPLIERS_PAGE_SIZE = 5
@@ -52,7 +56,7 @@ class Test(Config):
 
 
 class Development(Config):
-    DEBUG = False
+    DEBUG = True
 
     DM_API_AUTH_TOKENS = 'myToken'
     DM_SEARCH_API_AUTH_TOKEN = 'myToken'
