@@ -40,11 +40,14 @@ def upgrade():
         column('one_service_limit', Boolean)
     )
 
-    op.bulk_insert(lot_table, [
-        {'name': 'Supply Teachers', 'slug': 'supply_teachers', 'one_service_limit': False}
-    ])
-
     conn = op.get_bind()
+    res = conn.execute("SELECT id FROM lots WHERE slug = 'supply_teachers'")
+    st = list(res.fetchall())
+    if len(st) == 0:
+        op.bulk_insert(lot_table, [
+            {'name': 'Supply Teachers', 'slug': 'supply_teachers', 'one_service_limit': False}
+        ])
+
     res = conn.execute("SELECT id FROM frameworks WHERE slug = 'inoket-2'")
     framework = list(res.fetchall())
 
