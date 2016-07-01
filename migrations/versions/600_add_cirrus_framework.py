@@ -46,7 +46,7 @@ def upgrade():
     ])
 
     conn = op.get_bind()
-    res = conn.execute("SELECT id FROM frameworks WHERE slug = 'cirrus-1'")
+    res = conn.execute("SELECT id FROM frameworks WHERE slug = 'cirrus'")
     framework = list(res.fetchall())
 
     res = conn.execute("SELECT id FROM lots WHERE slug in ('clcs', 'catering', 'saas', 'iaas')")
