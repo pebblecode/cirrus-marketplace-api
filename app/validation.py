@@ -36,16 +36,19 @@ SCHEMA_NAMES = [
     'services-digital-outcomes-and-specialists-digital-specialists',
     'services-digital-outcomes-and-specialists-user-research-studios',
     'services-digital-outcomes-and-specialists-user-research-participants',
-    'services-cirrus-catering',
-    'services-cirrus-clcs',
-    'services-cirrus-iaas',
-    'services-cirrus-saas',
+    'services-inoket-1-iaas',
+    'services-inoket-1-saas',
+    'services-inoket-1-paas',
+    'services-inoket-1-scs',
+    'services-inoket-1-supply_teachers',
+    'services-inoket-2-supply_teachers',
     'services-update',
     'users',
     'users-auth',
     'suppliers',
     'new-supplier',
     'contact-information',
+    'orders-create',
 ]
 FORMAT_CHECKER = FormatChecker()
 

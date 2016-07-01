@@ -1162,3 +1162,35 @@ def filter_null_value_fields(obj):
 
 def generate_new_service_id(framework_slug):
     return str(random.randint(10 ** 14, 10 ** 15 - 1))
+
+
+class Order(db.Model):
+    __tablename__ = "orders"
+
+    ORDER_STATES = {
+        'received': 'received'
+    }
+
+    """
+    RFC_2821: forward or reverse path length is 256 characters.
+    We can omit the angle brackets required by smtp.
+    """
+    MAX_EMAIL_LENGTH = 254
+
+    id = db.Column(db.Integer, primary_key=True)
+    service_id = db.Column(db.Integer, db.ForeignKey('services.id'), nullable=False)
+    email = db.Column(db.String(length=MAX_EMAIL_LENGTH))
+    purchase_order_number = db.Column(db.String(length=256))
+    amount_in_pennies = db.Column(db.Integer)
+    order_state = db.Column(db.Enum(ORDER_STATES.keys(), name="order_states_enum"))
+
+    @staticmethod
+    def from_json(data):
+        o = Order()
+        o.service_id = data.get('service_id')
+        o.email = data.get('email')
+        o.purchase_order_number = data.get('po_number')
+        o.amount_in_pennies = data.get('amount_in_pennies')
+        o.order_state = Order.ORDER_STATES['received']
+        return o
+

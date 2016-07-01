@@ -3,8 +3,6 @@
 version: '2'
 services:
   pg:
-    volumes:
-      - /mnt/data/docker-data-volumes/inoket/api/dev:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=pebblec0de
       - POSTGRES_USER=cirrusadmin

@@ -11,7 +11,8 @@ from app.models import (
     Supplier, SupplierFramework,
     Brief, BriefResponse,
     ValidationError,
-    BriefClarificationQuestion
+    BriefClarificationQuestion,
+    Order
 )
 
 from .helpers import BaseApplicationTest
@@ -667,3 +668,30 @@ class TestSupplierFrameworks(BaseApplicationTest):
         supplier_framework.declaration = {'foo': ' bar ', 'bar': '', 'other': ' '}
 
         assert supplier_framework.declaration == {'foo': 'bar', 'bar': '', 'other': ''}
+
+
+class TestOrders(BaseApplicationTest):
+    def test_order_created(self):
+        with self.app.app_context():
+            self.setup_dummy_suppliers(1)
+            supplier = Supplier.query.filter(Supplier.supplier_id == 0).first()
+            self.setup_dummy_service(
+                    service_id='1000000000',
+                    status='published',
+                    supplier_id=supplier.supplier_id,
+                    framework_id=2)
+            service = Service.query.filter(Service.service_id == '1000000000').first()
+            order = Order()
+            order.service_id = service.id
+            order.email = "test@example.com"
+            order.purchase_order_number = "12917219"
+            order.amount_in_pennies = 128182818
+            order.order_state = Order.ORDER_STATES['received']
+            db.session.add(order)
+            db.session.commit()
+            read = Order.query.get(order.id)
+            assert order.email == read.email
+            assert order.service_id == service.id
+            assert order.amount_in_pennies == read.amount_in_pennies
+            assert order.purchase_order_number == read.purchase_order_number
+            assert order.order_state == read.order_state

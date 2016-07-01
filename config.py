@@ -20,6 +20,10 @@ class Config:
     DM_LOG_PATH = '/var/log/digitalmarketplace/application.log'
     DM_REQUEST_ID_HEADER = 'DM-Request-ID'
     DM_DOWNSTREAM_REQUEST_ID_HEADER = 'X-Amz-Cf-Id'
+    ORDER_BUYER_FROM_EMAIL = "donotreply@inoket.com"
+    ORDER_BUYER_FROM_NAME = "Inoket Orders Management"
+    ORDER_SUPPLIER_FROM_EMAIL = "donotreply@inoket.com"
+    ORDER_SUPPLIER_FROM_NAME = "Inoket Orders Management"
 
     # Feature Flags
     RAISE_ERROR_ON_MISSING_FEATURES = True
@@ -52,7 +56,7 @@ class Test(Config):
 
 
 class Development(Config):
-    DEBUG = False
+    DEBUG = True
 
     DM_API_AUTH_TOKENS = 'myToken'
     DM_SEARCH_API_AUTH_TOKEN = 'myToken'

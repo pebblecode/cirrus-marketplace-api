@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from nose.tools import assert_equal, assert_in
 
 from app import create_app, db
-from app.models import Service, Supplier, ContactInformation, Framework, Lot, User, FrameworkLot, Brief
+from app.models import Service, Supplier, ContactInformation, Framework, Lot, User, FrameworkLot, Brief, Order
 
 TEST_SUPPLIERS_COUNT = 3
 
