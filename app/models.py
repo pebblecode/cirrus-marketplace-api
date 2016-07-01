@@ -1178,7 +1178,7 @@ class Order(db.Model):
     MAX_EMAIL_LENGTH = 254
 
     id = db.Column(db.Integer, primary_key=True)
-    service_id = db.Column(db.Integer, db.ForeignKey('services.id'), nullable=False)
+    service_id = db.Column(db.String, db.ForeignKey('services.service_id'), nullable=False)
     email = db.Column(db.String(length=MAX_EMAIL_LENGTH))
     purchase_order_number = db.Column(db.String(length=256))
     amount_in_pennies = db.Column(db.Integer)

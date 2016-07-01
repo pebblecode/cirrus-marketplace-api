@@ -27,19 +27,21 @@ def create_order():
         db.session.commit()
     except IntegrityError as e:
         db.session.rollback()
-        return jsonify(message="Database Error: {0}".format(e)), 400
+        log_message = "Database Error: {0}".format(e)
+        current_app.logger.error(log_message)
+        return jsonify(message=log_message), 400
 
     try:
         contact = db.session\
                 .query(ContactInformation)\
                 .join(Supplier, Service)\
-                .filter(Service.id == order.service_id)\
+                .filter(Service.service_id == order.service_id)\
                 .filter(ContactInformation.email is not None)\
                 .first()
     except Exception as e:
-        return jsonify(
-                message="Failed to look up supplier for service id: {0}, Error: {1}"
-                .format(order.service_id, e)), 400
+        log_message = "Failed to look up supplier for service id: {0}, Error: {1}".format(order.service_id, e)
+        current_app.logger.error(log_message)
+        return jsonify(log_message), 400
 
     send_emails(order, body.get('email'), contact.email)
 
