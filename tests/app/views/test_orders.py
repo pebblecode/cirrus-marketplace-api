@@ -16,8 +16,8 @@ class TestPostOrder(BaseApplicationTest):
 
     def _call_valid(self):
             self.setup_dummy_suppliers(2)
-            self.setup_dummy_service(service_id='10000000001')
-            sid = Service.query.filter(Service.service_id == '10000000001').first().id
+            sid = '10000000001'
+            self.setup_dummy_service(service_id=sid)
             return self.client.post(
                 self.endpoint,
                 data=json.dumps({
@@ -30,25 +30,26 @@ class TestPostOrder(BaseApplicationTest):
                 )
 
     def test_validation_error_causes_bad_request(self, email):
-        response = self.client.post(
-                self.endpoint,
-                data=json.dumps({
-                    'service_id': -20
-                    }),
-                content_type='application/json')
-        assert_equal(400, response.status_code)
-        data = json.loads(response.get_data())
-        errors = data['error']
-        service_id_error = ""
-        field_missing_errors = []
-        for e in errors:
-            if 'service_id' in e:
-                service_id_error = e
-            else:
-                field_missing_errors.append(e)
-        assert_in(u'-20', service_id_error)
-        for e in field_missing_errors:
-            assert_in(u'required', e)
+        with self.app.app_context():
+            response = self.client.post(
+                    self.endpoint,
+                    data=json.dumps({
+                        'service_id': -20
+                        }),
+                    content_type='application/json')
+            assert_equal(400, response.status_code)
+            data = json.loads(response.get_data())
+            errors = data['error']
+            service_id_error = ""
+            field_missing_errors = []
+            for e in errors:
+                if 'service_id' in e:
+                    service_id_error = e
+                else:
+                    field_missing_errors.append(e)
+            assert_in(u'-20', service_id_error)
+            for e in field_missing_errors:
+                assert_in(u'required', e)
 
     def test_can_post_a_valid_order(self, email):
         with self.app.app_context():
@@ -62,20 +63,20 @@ class TestPostOrder(BaseApplicationTest):
                     data='',
                     content_type='application/json'
                     )
-        assert_false(email.called)
+            assert_false(email.called)
 
     def test_sends_two_emails(self, email):
         with self.app.app_context():
             self._call_valid()
-
-        assert_equal(2, len(email.call_args_list))
-        def subject(_a, subj, *rest):
-            return subj
-        subjects = str.join(
-                "", 
-                reduce(
-                    lambda x,y: subject(*x[0]) + subject(*y[0]),
-                    email.call_args_list))
-        assert_in('received', subjects)
-        assert_in('sent', subjects)
+            assert(True, email.called)
+            assert_equal(2, len(email.call_args_list))
+            def subject(_a, subj, *rest):
+                return subj
+            subjects = str.join(
+                    "",
+                    reduce(
+                        lambda x,y: subject(*x[0]) + subject(*y[0]),
+                        email.call_args_list))
+            assert_in('received', subjects)
+            assert_in('sent', subjects)
 
