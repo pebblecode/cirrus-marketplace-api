@@ -100,8 +100,15 @@ def send_emails(order, buyer, supplier, service):
                 service,
                 today)
         try:
-            send_email(from_address=info.from_address, to_addresses=[to], subject=info.subject, body_text=info.body_text, from_email_name=info.from_name, tags=info.tags, body_html=info.body_html)
-            # send_email(info.from_address, to, info.subject, info.body_text)
+            send_email(
+                    from_address=info.from_address,
+                    to_addresses=[to],
+                    subject=info.subject,
+                    body_text=info.body_text,
+                    from_email_name=info.from_name,
+                    tags=info.tags,
+                    body_html=info.body_html
+                    )
         except Exception as e:
             current_app.logger.error(
                     "Sending email to [{0}] for order_id: [{1}]. Details: {2}"
@@ -112,8 +119,8 @@ def send_emails(order, buyer, supplier, service):
 
 
 def get_email_info(buyer_or_supplier, order, buyer, supplier, service, today_date):
+    html_body = format_html_body(buyer_or_supplier, buyer, supplier, service, order, today_date)
     if buyer_or_supplier == 'buyer':
-        html_body = format_buyer_html_body(buyer, supplier, service, order, today_date)
         text_body = format_buyer_text_body(buyer, supplier, service, order, today_date)
         subject = "Purchase Order No: {0} Sent".format(order.get('purchase_order_number'))
         info = EmailInfo(
@@ -131,15 +138,18 @@ def get_email_info(buyer_or_supplier, order, buyer, supplier, service, today_dat
                 from_name=current_app.config.get('ORDER_SUPPLIER_FROM_NAME'),
                 subject="Purchase Order Received",
                 body_text="A request to buy a service has been received.",
-                body_html='',
+                body_html=html_body,
                 tags=["supplier", "supplier_orders", "orders"]
                 )
 
 def format_buyer_text_body(*args):
     return "Your order has been sent."
 
-def format_buyer_html_body(buyer, supplier, service, order, today_date):
-    template = Template(current_app.config['email_templates']['buyer_order_received'])
+def format_html_body(buyer_or_supplier, buyer, supplier, service, order, today_date):
+    if buyer_or_supplier == 'buyer':
+        template = Template(current_app.config['email_templates']['buyer_order_received'])
+    else:
+        template = Template(current_app.config['email_templates']['supplier_order_received'])
     return template.render(
             buyer=buyer,
             supplier=supplier,
@@ -147,3 +157,4 @@ def format_buyer_html_body(buyer, supplier, service, order, today_date):
             purchase_order_number=order.get('purchase_order_number'),
             amount=str(order.get('amount_in_pennies') / 100.0),
             date=today_date)
+

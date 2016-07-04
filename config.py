@@ -48,6 +48,10 @@ class Config:
         application.config['email_templates'] = {}
         application.config['email_templates']['buyer_order_received'] = buyer_template
 
+        with codecs.open('email_templates/inoket-order-seller.html', 'r', encoding='utf-8') as f:
+            seller_template = f.read()
+        application.config['email_templates']['supplier_order_received'] = seller_template
+
 class Test(Config):
     DM_SEARCH_API_AUTH_TOKEN = 'test'
     DM_SEARCH_API_URL = 'http://localhost'
