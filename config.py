@@ -1,4 +1,5 @@
 import os
+import codecs
 from dmutils.status import enabled_since, get_version_label
 
 
@@ -40,6 +41,12 @@ class Config:
 
     DM_FAILED_LOGIN_LIMIT = 5
 
+    @staticmethod
+    def init_app(application):
+        with codecs.open('email_templates/inoket-order-buyer.html', 'r', encoding='utf-8') as f:
+            buyer_template = f.read()
+        application.config['email_templates'] = {}
+        application.config['email_templates']['buyer_order_received'] = buyer_template
 
 class Test(Config):
     DM_SEARCH_API_AUTH_TOKEN = 'test'
