@@ -1,0 +1,3 @@
+[submodule "email_templates"]
+	path = email_templates
+	url = git@github.com:pebblecode/cirrus-email-template.git
