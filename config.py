@@ -1,6 +1,8 @@
 import os
 import codecs
 from dmutils.status import enabled_since, get_version_label
+import importlib
+templates = importlib.import_module("inoket-email-templates")
 
 
 class Config:
@@ -43,14 +45,9 @@ class Config:
 
     @staticmethod
     def init_app(application):
-        with codecs.open('email_templates/inoket-order-buyer.html', 'r', encoding='utf-8') as f:
-            buyer_template = f.read()
         application.config['email_templates'] = {}
-        application.config['email_templates']['buyer_order_received'] = buyer_template
-
-        with codecs.open('email_templates/inoket-order-seller.html', 'r', encoding='utf-8') as f:
-            seller_template = f.read()
-        application.config['email_templates']['supplier_order_received'] = seller_template
+        application.config['email_templates']['buyer_order_received'] = templates.buyer_template.decode('utf-8')
+        application.config['email_templates']['supplier_order_received'] = templates.supplier_template.decode('utf-8')
 
 class Test(Config):
     DM_SEARCH_API_AUTH_TOKEN = 'test'
