@@ -675,14 +675,15 @@ class TestOrders(BaseApplicationTest):
         with self.app.app_context():
             self.setup_dummy_suppliers(1)
             supplier = Supplier.query.filter(Supplier.supplier_id == 0).first()
+            service_id = '1000000000'
             self.setup_dummy_service(
-                    service_id='1000000000',
+                    service_id=service_id,
                     status='published',
                     supplier_id=supplier.supplier_id,
                     framework_id=2)
-            service = Service.query.filter(Service.service_id == '1000000000').first()
+            service = Service.query.filter(Service.service_id == service_id).first()
             order = Order()
-            order.service_id = service.id
+            order.service_id = service_id
             order.email = "test@example.com"
             order.purchase_order_number = "12917219"
             order.amount_in_pennies = 128182818
@@ -691,7 +692,7 @@ class TestOrders(BaseApplicationTest):
             db.session.commit()
             read = Order.query.get(order.id)
             assert order.email == read.email
-            assert order.service_id == service.id
+            assert order.service_id == service.service_id
             assert order.amount_in_pennies == read.amount_in_pennies
             assert order.purchase_order_number == read.purchase_order_number
             assert order.order_state == read.order_state

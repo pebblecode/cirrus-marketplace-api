@@ -18,6 +18,7 @@ class TestPostOrder(BaseApplicationTest):
             self.setup_dummy_suppliers(2)
             sid = '10000000001'
             self.setup_dummy_service(service_id=sid)
+            db.session.commit()
             return self.client.post(
                 self.endpoint,
                 data=json.dumps({
@@ -67,16 +68,19 @@ class TestPostOrder(BaseApplicationTest):
 
     def test_sends_two_emails(self, email):
         with self.app.app_context():
-            self._call_valid()
+            response = self._call_valid()
+            assert_equal(response.status_code, 201)
             assert(True, email.called)
             assert_equal(2, len(email.call_args_list))
-            def subject(_a, subj, *rest):
-                return subj
+
+            def subject(**kwargs):
+                sub = kwargs.get('subject')
+                return sub
+
             subjects = str.join(
                     "",
                     reduce(
-                        lambda x,y: subject(*x[0]) + subject(*y[0]),
+                        lambda x, y: subject(**x[1]) + subject(**y[1]),
                         email.call_args_list))
-            assert_in('received', subjects)
-            assert_in('sent', subjects)
-
+            assert_in('received', subjects.lower())
+            assert_in('sent', subjects.lower())
